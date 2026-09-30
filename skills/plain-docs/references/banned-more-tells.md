@@ -1,0 +1,173 @@
+# More banned phrases (throat-clearing)
+
+## More throat-clearing and model tells
+
+Delete:
+
+- To be clear
+- To be honest
+- Long story short
+- Without further ado
+- Let's take a step back
+- Zooming out
+- Zooming in
+- From a high-level perspective
+- From an architecture standpoint
+- It should be noted that
+- As such
+- Hence
+- Thus
+- Therefore (when no proof followed)
+- Ultimately
+- Essentially
+- Basically
+- Literally (as padding)
+- Actually (as padding)
+- Interestingly
+- Importantly
+- Crucially
+- Notably
+- Suffice it to say
+- The reality is
+- The truth is
+- Make no mistake
+- Rest assured
+- Please note that
+- Kindly
+- Hereby
+- Herein
+- Aforementioned
+- The following section will discuss
+- We will explore
+- We will cover
+- This section outlines
+- In a nutshell
+- All in all
+- Last but not least
+- On the other hand (when there is no contrast)
+- Having said that
+- With this in mind
+- In light of
+- Across the organization
+- Across the stack
+- At scale (with no number)
+- In production scenarios
+- Real-world
+- Battle-hardened
+- Hardened
+- Wired together
+- Loosely coupled (unless you name the boundary)
+- Tightly coupled (unless you name the files)
+- Modular
+- Extensible
+- Pluggable
+- Composable
+- Idempotent (unless the code is, and then say how)
+- Canonical
+- Holistically speaking
+- Synergize
+- Ideation
+- Band-aid (unless quoting)
+- Quick win (unless you name the change and the time)
+- Low-hanging fruit
+- Move fast
+- Raise the bar
+- Level set
+- Deep-dive (noun or verb)
+- Whiteboard (as a verb, unless they did)
+- Timebox (unless a real time is set)
+- Offline this
+- Take this offline
+- Put a pin in it
+- Park that
+- Action item (write the action)
+- Loop in
+- Close the loop
+- Thought leadership
+- Mindshare
+- Bandwidth (for people — say time)
+- Optics
+- Narrative
+- Storytelling
+- Hero moment
+- Delight the user
+- User-centric
+- Customer-obsessed
+- Data-driven (name the data)
+- Best-of-breed
+- Next-level
+- Bleeding-edge
+- Future-ready
+- Scale-out / scale-up as decoration
+- Reimagine
+- Reinvent
+- Disrupt
+- Unlock potential
+- Drive outcomes
+- Create synergy
+- Foster collaboration
+- Promote visibility
+- Increase awareness
+- Enable success
+- Deliver excellence
+- Achieve operational excellence
+- Digital transformation
+- Cloud journey
+- Modernization effort
+- Platform play
+- Ecosystem play
+- Win-win
+- Circle of influence
+- Core competency
+- Value proposition
+- Differentiator
+- Moat
+- Flywheel
+- North star
+- 30,000 foot view
+- 10,000 foot view
+- Boil the ocean
+- Peel the onion
+- Move cheese
+- Herding cats
+- Drink from the firehose
+- Hit the ground running
+- Open the kimono
+- Think outside the box
+- Paradigm shift
+- Quantum leap
+- Game changing
+- Lightspeed
+- Blazing fast
+- Lightning fast
+- Rock solid
+- Super simple
+- Dead simple
+- Pretty much
+- Kind of / sort of (in shipped docs)
+- Stuff / things (name the file)
+- Various / numerous (count them)
+- Appropriate / relevant action (name it)
+- Necessary steps (list them)
+- Associated components (name them)
+- Underlying infrastructure (name it)
+- Broader ecosystem (name the systems)
+- Holistic view
+- 360-degree view
+- Single source of truth (name the table)
+- Seamless integration
+- Tight integration
+- Native integration (name the call)
+- Out-of-the-box support
+- Batteries-included
+- Works like magic
+- It just works
+- You should be able to
+- Simply run (drop simply)
+- Just add (drop just)
+
+## Allowed exceptions
+
+- Quote an upstream spec that uses the word.
+- A proper noun (`Seamless` the company).
+- A user asked for a parody of corporate voice.

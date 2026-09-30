@@ -109,6 +109,64 @@ Date: <date>
 - <option>: <one paragraph why not>
 ```
 
+## TDD (technical design document)
+
+Use this when the user says TDD, technical design, or design doc for a change. Delete any section you cannot source. Longer rules: [tdd.md](tdd.md).
+
+```
+# TDD: <change in one line>
+
+Status: draft | in review | accepted
+Date: <date>
+Owner: <name or team if known>
+Links: <ticket, ADR, PR>
+
+## Problem
+
+<what is broken or missing, with a number if we have one>
+
+## Constraints
+
+- <time, money, compatibility, compliance, existing system we cannot rip out>
+
+## In scope / out of scope
+
+- In: <what this change does>
+- Out: <what people might assume, but we are not doing>
+
+## Design
+
+<how it will work. Name files, endpoints, tables, queues, jobs.>
+
+### Interfaces
+
+<API, events, flags. One real request/response if an API changes.>
+
+### Data
+
+<what is stored, where, retention if known>
+
+## Failure modes
+
+| Failure | What happens | How we see it |
+| --- | --- | --- |
+|  |  |  |
+
+## Rollout
+
+1. <order of ship>
+2. <flag / percent>
+3. <how we roll back>
+
+## Open questions
+
+- <unanswered, named as unanswered>
+
+## Rejected
+
+- <option>: <why not>
+```
+
 ## Changelog entry
 
 ```

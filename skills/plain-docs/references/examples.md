@@ -112,3 +112,40 @@ After (only what the session actually found):
 > 1. `kubectl apply -f deploy/prod/networkpolicy.yaml`
 > 2. Error rate on https://grafana.example/d/orders should fall under 1% within 2 minutes.
 > 3. Still high → page #orders-oncall
+
+## TDD fragment
+
+Before:
+
+> This document aims to provide a holistic, future-proof design that leverages our orchestration layer to seamlessly unlock next-generation tax calculation capabilities.
+
+After:
+
+> # TDD: charge tax in the orders API
+>
+> Status: draft
+> Links: TICKET-1842
+>
+> ## Problem
+>
+> `POST /v1/orders` ignores `tax_cents`. Finance has to backfill ~12k orders/month.
+>
+> ## Constraints
+>
+> - Old clients send no tax field. They must keep working until 2026-12-01.
+> - We already use Postgres for orders (`orders.orders`).
+>
+> ## Design
+>
+> Add required `tax_cents` on `POST /v1/orders` behind flag `orders.tax_v2`.
+> Writer: `internal/http/orders.go`. Column: `orders.tax_cents int not null default 0`.
+>
+> Flag off: accept the body, store `0`, do not 400.
+> Flag on: missing field → `400` `{ "error": "tax_cents required" }`.
+>
+> ## Rollout
+>
+> 1. Migrate column.
+> 2. Ship code, flag off.
+> 3. Flag on for internal clients, then all.
+> 4. Roll back: set `orders.tax_v2=off`. Column can stay.

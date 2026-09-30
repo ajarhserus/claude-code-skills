@@ -1,73 +1,88 @@
 ---
-description: "When a question is allowed vs forbidden. Read before calling AskUserQuestion or writing a clarifying question."
+description: "When a question is allowed vs forbidden. Read before AskUserQuestion or a clarifying question."
 ---
 
 # Ask gate
 
-A question is allowed only if **all** of these are true:
+Ask only if every line is true:
 
-1. The answer changes the work in a way you cannot cheaply undo.
+1. Cheap undo is false — a wrong call here is hard to reverse.
 2. You already searched the request, the repo, git, and public docs.
-3. Neighboring code does not already pick a pattern.
-4. There is no safe default you can state and proceed with.
-5. The user is the only person who knows the answer.
+3. Neighbor code does not already pick a pattern.
+4. No safe default exists.
+5. The user is the only person who knows.
 
-If any item is false, do not ask.
+If any line is false, look or assume.
 
-## User is source of truth
+## Cheap undo
 
-Ask (after the look):
+Assume, do not ask:
 
-| Topic | Why it is theirs |
-|---|---|
-| Product outcome | "Is this for end users or internal ops?" when both exist and the repo is silent |
-| Irreversible side effect | production migrate, delete, force-push, email customers, spend money |
-| Secret value | API token, password, account they have not put in the environment |
-| Taste with no house style | copy, brand, UX when no design system or existing screen exists |
-| Scope they never named | "also rewrite the billing service?" when they asked for a typo fix |
+| Choice | Why it is cheap |
+| --- | --- |
+| File path, folder, helper name | Rename or move later |
+| Match existing library | Repo already pays the cost |
+| Test added next to neighbors | Delete the file |
+| Extra log line / flag default off | Revert the diff |
+| Plan contents in plan mode | User rejects the plan |
+| Implementation approach when one sibling exists | Copy the sibling |
 
-Do not ask:
+Ask, after the look:
 
-| Topic | Why it is not theirs |
-|---|---|
+| Choice | Why it is theirs |
+| --- | --- |
+| Prod migrate, delete, force-push | Data or history loss |
+| Email customers / spend money | External side effect |
+| Secret value missing from env | Only they have it |
+| Product audience the repo never states | Two real products |
+| Brand / copy / UX with no existing screen | Taste |
+| Scope they never named | They asked for a typo, not a rewrite |
+
+## Do not ask
+
+| Topic | Do this |
+| --- | --- |
 | File location | Grep / Glob |
-| How a function works | Read the function |
-| Which library the repo uses | package.json, imports, existing modules |
-| Test command | package.json, Makefile, CI |
+| How a function works | Read it |
+| Which library | package manifest + imports |
+| Test or lint command | package.json, Makefile, CI |
+| Node / Python / package manager | lockfile (`pnpm-lock.yaml` wins over a question) |
 | Public API shape | vendor docs |
-| Naming of a new helper | match the folder |
-| Whether to read a file | that is your job |
-| Whether the plan is OK in plan mode | use plan approval |
+| New helper name | match the folder |
+| Whether to read a file | read it |
+| "Is this the right file?" | If Grep hit it and the test sits next to it, it is |
+| Plan OK in plan mode | Exit plan for approval |
+| Paste this log / file | Read the terminal or workspace |
+| Dark/light, spacing, copy on an existing screen | Match the screen |
 
 ## Permission theater
 
-These are not questions. They are stalls. Convert each to an action:
-
 | Stall | Action |
-|---|---|
+| --- | --- |
 | Want me to check the repo? | Check the repo |
-| Should I search the web? | Search if the dependency is third-party |
+| Should I search the web? | Search only for third-party APIs |
 | Can I run the tests? | Run the relevant tests |
-| Should I add a test? | Add one if the folder already tests this layer |
-| Do you want me to proceed? | They already asked you to do the task |
+| Should I add a test? | Add one if this layer already has tests |
+| Do you want me to proceed? | They already gave the task |
+| Which of these three plans? | Pick the one that matches the repo, put the others in one rejected line |
 
-## Defaults beat questions
+## Greenfield
 
-Pick the default that already exists, in this order:
+Empty or tiny repo, no sibling pattern:
 
-1. Exact pattern in the same package
-2. Pattern in the closest sibling feature
-3. Documented convention in `CLAUDE.md` / ADRs
-4. Language or framework idiomatic default
-5. The reversible option (feature flag off, additive API, no data delete)
+1. Still do not ask stack questions the lockfile or scaffold already answered.
+2. If the user named the outcome and not the stack, pick the smallest common default and assume.
+3. Ask once only for a product fork (who it is for, paid vs free, destroy vs keep data).
 
-State it. Move.
+## Question shape
 
-## Question shape when allowed
+One question. Recommended first. Evidence line required.
 
-One question, two to four options, one marked recommended.
+```
+Looked: <tools and paths>
+Blocked on: <why only the user knows>
+Recommended: <option + why>
+Other: <option>
+```
 
-Bad: "How do you want auth?"
-Good: "Auth is not specified and the repo has no auth. Recommended: session cookies like `apps/web` already uses for admin. Or JWT if this is a public API."
-
-If you need two axes (who + where), put both in one turn. Never ask axis 1, wait, then axis 2.
+Two axes (who + where) go in one turn. Do not ask axis 1, wait, then axis 2.

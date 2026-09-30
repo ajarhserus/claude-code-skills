@@ -1,39 +1,52 @@
 ---
-description: "Search order and tools to use before asking the user. Read when you do not know where a fact lives."
+description: "Search order before asking. Read when you do not know where a fact lives."
 ---
 
 # Look order
 
-Use the smallest tool that can answer. Stop when you have the fact.
+Smallest tool first. Stop when you have the fact.
 
-## 1. What the user already said
+## 1. Request
 
-Re-read the current message and the last few turns. @-mentioned paths are the start, not a hint to ignore.
+Current message, last few turns, @-paths. If they named a file, start there.
 
 ## 2. Exact strings
 
-Grep the error, symbol, route, flag, and unique phrase. Glob the likely folder names (`**/*auth*`, `**/*billing*`).
+Grep the error, symbol, route, flag, unique phrase.
+Glob likely folders (`**/*auth*`, `**/*billing*`).
 
-## 3. The file and its neighbors
+Two hits in different packages: pick the package the user is already in (`pwd`, open file, @-mention). Say so. Do not ask which package.
 
-Read the implementation, the test next to it, and the type or proto it imports. Conventions live in siblings more often than in README.
+## 3. Neighbors
 
-## 4. Project memory
+Implementation, test beside it, type or proto it imports. House style lives in siblings more than in README.
 
-Read `CLAUDE.md`, `.claude/`, ADRs, `docs/`, runbooks, `.env.example`, CI workflows, Makefile / package.json scripts. These are the house style.
+## 4. House files
+
+`CLAUDE.md`, `.claude/`, ADRs, `docs/`, `.env.example`, CI, Makefile, package manifest, lockfile. Lockfile is the package manager. Do not ask npm vs pnpm vs yarn.
 
 ## 5. Git
 
-`git log -S` and `git blame` for "why is this like this?" The commit message often beats asking the author who is sitting next to you.
+`git log -S` and `git blame` for why it is this way. The commit message often beats asking the person next to you.
 
-## 6. Third-party only: web
+## 6. Web, third-party only
 
-Search vendor docs when the gap is an external API, CLI flag, or error from a library. Do not search the web for how *this* repo names things.
+Vendor docs for an external API, CLI flag, or library error. Not for how this repo names things.
 
-## Stop conditions
+## Commands
 
-- You found the pattern: copy it.
-- You found two patterns: pick the one in the same package, say so.
-- You found nothing after a bounded search: state the assumption and implement in the smallest place that compiles.
+Do not ask "how do I run tests / lint / dev / migrate":
 
-A bounded search is: one targeted grep, one glob, the obvious config file, and the nearest test. Not a repository tour.
+1. `package.json` scripts, Makefile, `justfile`, `Taskfile`, `tox.ini`, `pyproject.toml`
+2. `.github/workflows` or other CI
+3. README only if those are empty
+
+Then run the narrowest matching command.
+
+## Stop
+
+- One pattern: copy it.
+- Two patterns: same-package wins. State it.
+- Nothing after a bounded look: assume and implement in the smallest place that compiles.
+
+Bounded look = one Grep or Glob + one neighbor or house file. Then decide.

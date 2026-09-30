@@ -1,50 +1,58 @@
 ---
-description: "Good and bad agent behavior. Read before asking a question or when the user said stop asking."
+description: "Good vs bad. Read before asking or when the user said stop asking."
 ---
 
 # Examples
 
-## User: "Fix the 500 on POST /orders"
+## "Fix the 500 on POST /orders"
 
-Bad:
+Bad: Which file handles orders? Prisma or SQL?
 
-> Which file handles orders? Should I look at the API folder? Do you use Prisma or raw SQL?
+Good: Grep `POST` + `orders`, read handler + test, patch the nil case, run the existing order tests.
 
-Good:
+`Assumption: handler is apps/api/src/orders/create.ts; 500 matches the unchecked inventory lookup.`
 
-Grep `POST` + `orders`, read the handler and the test, patch the nil case, run the existing order tests.
+## "Add rate limiting to the public API"
 
-Assumption only if needed: `Assumption: /orders is apps/api/src/orders/create.ts; the 500 matches the unchecked inventory lookup.`
+Bad: Redis or memory? Which library? What limit?
 
-## User: "Add rate limiting to the public API"
+Good when webhooks already limit with Redis: reuse that helper. Say you matched `apps/api/src/webhooks/rateLimit.ts`.
 
-Bad:
+Good when nothing exists:
 
-> Redis or memory? Which library? What limit?
+```
+Looked: Grep `rateLimit`, Read `lib/redis.ts`. No public-API limiter.
+Recommended: that Redis client at 60/min/IP.
+Other: in-memory, single instance only.
+```
 
-Good if the repo already rate-limits webhooks with Redis:
+## "Deploy this"
 
-Implement the same helper on public routes. Say: `Matching apps/api/src/webhooks/rateLimit.ts (Redis, 60/min). Applying that to public routes.`
+Bad: Should I deploy? Which env? Want me to read the workflow?
 
-Good if the repo has no limiter and the user named none:
+Good: Read `.github/workflows` and the deploy script. One target → that target. Prod vs staging unmarked → one question, staging recommended, prod needs an explicit go-ahead.
 
-One question: `No rate limiter in repo. Recommended: reuse the Redis client in lib/redis.ts at 60 req/min/IP (same budget as webhooks). Other option: in-memory, single-instance only.`
+## "Don't ask, just do it"
 
-## User: "Deploy this"
-
-Bad:
-
-> Should I deploy? Which environment? Want me to read the workflow file?
-
-Good:
-
-Read `.github/workflows` and the deploy script. If the only target is staging and the user said "deploy this" after a staging discussion, deploy staging. If prod vs staging is unmarked and both exist, ask once: `Recommended: staging via scripts/deploy.sh. Prod needs an explicit go-ahead.`
-
-## User: "Don't ask, just do it"
-
-Treat every later impulse to question as failed. Take the repo default. Log assumptions. Keep moving.
+`Action` cannot be `ask`. Repo default. Assumption line. Move.
 
 ## Plan mode
 
-Bad: AskUserQuestion "Does this plan look good?"
-Good: Write the plan with defaults and wait for plan approval.
+Bad: `AskUserQuestion` "Does this plan look good?"
+Good: Plan with defaults. Plan approval is the confirm.
+
+## "Which file should this go in?"
+
+You do not ask this. Glob the feature folder. Put it next to the sibling. If two folders fit, the one with tests for that layer wins.
+
+## "Can you confirm this is the auth module?"
+
+You found `src/auth/session.ts` and its test. Do not confirm. Edit it.
+
+## "Paste the CI log"
+
+The log is in the terminal or `gh run view`. Read it.
+
+## Greenfield "build a CLI"
+
+`package.json` already has `"bin"` and commander. Do not ask framework. Extend the existing CLI.

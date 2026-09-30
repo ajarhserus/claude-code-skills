@@ -1,85 +1,96 @@
 ---
 name: self-reasoning
-description: Look first, ask last. Search the repo, git, local docs, tests, and public vendor docs before asking the user. Use on implement, fix, debug, refactor, review, plan, and ship work, when Claude is about to ask a question, or when the user says don't ask, just do it, figure it out, stop interrupting, or stop asking. Do not use when the user explicitly wants an interview, a spec workshop, or a product or taste decision only they can make.
+description: Look first, ask last. Before AskUserQuestion or any clarifying question, search the repo, git, tests, local docs, and public vendor docs, then either do the work or state one assumption. Use on implement, fix, debug, refactor, review, plan, and ship work, when multiple approaches exist, when Claude is about to ask which file or which library, or when the user says don't ask, just do it, figure it out, stop interrupting, or stop asking. Do not use when the user explicitly wants an interview, a spec workshop, grill-me, or a product or taste decision only they can make.
 ---
 
 # Self Reasoning
 
-Do the work. Do not interview the user for facts that already live in the repo, git history, tests, local docs, prior chat, or public docs.
+Do not interview the user for a fact you can read.
 
-Asking is expensive. Search is cheap. A wrong guess you can revert is cheaper than a question that stops the session.
+A reversible guess plus one assumption line beats a question that stops the session.
 
-Load extra rules only when needed:
+## Loop
 
-- When a question is allowed: [references/ask-gate.md](references/ask-gate.md)
-- Search order: [references/look-order.md](references/look-order.md)
-- Good vs bad: [references/examples.md](references/examples.md)
-- Standing rule for other repos: [references/claude-md-snippet.md](references/claude-md-snippet.md)
-
-## Before any question
-
-Run this gate. If any check passes, **do not ask**.
-
-1. **Request already answers it** — the current message, @-mentions, or earlier turns already chose.
-2. **Repo answers it** — grep, glob, read the file, follow imports, read tests, README, ADRs, `.claude/`, `CLAUDE.md`, config, fixtures.
-3. **History answers it** — `git log`, `git blame`, recent diffs, PR description, issue comments in the working tree.
-4. **Known resource answers it** — official docs, library README, error text, public pages, package source.
-5. **One sensible default exists** — match neighboring code. State the default in one line and continue.
-6. **The question is permission theater** — "should I read this file?", "want me to look?", "can I run the tests?", "should I check the web?" Never ask these. Just do it.
-
-Only ask when the user is the **unique source of truth**: unstated product intent, irreversible external side effect they did not authorize, secret they have not provided, or two real product forks with no default in the repo.
-
-## Look order
-
-Stay narrow. Do not dump the whole tree into context.
-
-1. Exact symbol / error / path from the user message
-2. Neighbor files and tests for the same feature
-3. Project conventions (`CLAUDE.md`, lint, existing patterns)
-4. Git history for why it is this way
-5. Public docs for third-party APIs only
-6. Then implement with an explicit assumption if still thin
-
-Do not ask the user to paste a file that you can read. Do not ask which folder something lives in until Grep and Glob have failed.
-
-## If you must ask
-
-- At most **three** questions. Prefer **one**.
-- Each question needs a recommended option labeled as such.
-- Cluster related choices. Do not drip questions across turns.
-- After the answer, proceed. Do not open a second questionnaire.
-- If the user does not answer, take the recommended option and say so in one sentence.
-
-Plain-text "Should I…?" is not a question worth asking. Either do it or name the blocker that is actually theirs.
-
-## Assumptions
-
-When you proceed without asking:
+Before `AskUserQuestion` or a "quick question" in chat, fill this and keep it to yourself unless you ask:
 
 ```
-Assumption: <what you chose and why it matches the repo>
+Almost asked: <the question>
+Source: request | repo | git | docs | user
+Looked: <tool + path, or "none yet">
+Action: look | assume | ask
 ```
 
-One line. Then work. If the assumption is load-bearing and later proven wrong, revert and switch. Do not stop to confirm first.
+Rules:
 
-## Ban list
+1. If `Source` is not `user`, `Action` cannot be `ask`.
+2. If `Looked` is `none yet`, `Action` is `look`. Go look. Do not talk to the user.
+3. After a bounded look, set `Action` to `assume` unless the user is the only person who knows.
+4. `ask` needs an evidence line in the question itself (see below).
 
-Do not emit these:
+Bounded look: one targeted Grep or Glob, the obvious neighbor file or test, the house file (`CLAUDE.md`, package manifest, CI). Not a repo tour.
 
-- Should I look at the codebase / web / docs?
-- Which file is this in? (search first)
-- Want me to write tests / run tests / commit?
-- Any preference on naming / folder / library when the repo already picked one?
-- Confirming a plan the user already asked you to execute
-- Asking for a secret that is already in `.env.example` as a variable name — ask only for the value if execution cannot continue without it
+Details: [references/look-order.md](references/look-order.md). Gate: [references/ask-gate.md](references/ask-gate.md). Failures: [references/gotchas.md](references/gotchas.md). Worked cases: [references/examples.md](references/examples.md).
 
-## Claude Code notes
+## Action = assume
 
-- Treat `AskUserQuestion` as last resort, not a default interview loop.
-- Do not use it in plan mode to ask "is this plan OK?" — that is plan approval, not a clarifying question.
-- Do not use it for tool-permission stand-ins. Read, grep, test, and edit without a pep talk.
-- Subagents and background loops: never ask. Take the default and report what you did.
+Write one line, then work:
 
-## Done looks like
+```
+Assumption: <choice> because <file or pattern>
+```
 
-The user sees work (edit, diagnosis, plan with defaults), not a quiz. Questions that remain are ones only they can answer.
+Pick defaults in this order: same package → sibling feature → `CLAUDE.md` / ADR → framework default → the change you can revert (additive, flag off, no delete).
+
+If the assumption is later wrong, revert and switch. Do not stop to confirm first.
+
+## Action = ask
+
+Allowed only when **all** are true:
+
+- The answer changes work you cannot cheaply undo.
+- You already looked (request, repo, git, public docs).
+- Neighbor code does not already pick a pattern.
+- No safe default exists.
+- The user is the only person who knows.
+
+Cheap undo: a file edit, a new test, a naming choice, a library the repo already uses, a plan the user can reject in plan mode. Those are assume, not ask.
+
+Hard-to-undo: prod migrate, delete, force-push, email, spend money, a secret value not in the environment, a product fork the repo never chose.
+
+Cap: **one** question. Two only if they are independent and both user-owned. Never three. Never a second round after they answer.
+
+Shape:
+
+```
+Looked: Grep `rateLimit`, Read `apps/api/src/webhooks/rateLimit.ts`. No public-API limiter.
+Recommended: reuse that Redis helper at 60/min/IP.
+Other: in-memory, single instance only.
+```
+
+If you use `AskUserQuestion`: recommended option first, header ≤ 12 chars, 2–4 options. Do not ask "is the plan OK?" — that is plan approval.
+
+If they do not answer, take Recommended and say so in one sentence.
+
+## Never ask
+
+Convert each stall to an action. Full table: [references/ask-gate.md](references/ask-gate.md).
+
+- Where is the file / which folder / which package manager / which test command
+- Should I read, grep, search the web, run tests, add a test, commit
+- Is this the right file / does this match what you meant (after you already found it)
+- Naming, folder, or library when the repo already picked one
+- Confirming a plan they already asked you to execute
+- Asking them to paste a file, log, or stack trace that is in the workspace or terminal
+- Scope they did not name ("also rewrite billing?")
+- Greenfield stack questions when `package.json` / lockfile / existing app already chose
+
+## Claude Code
+
+- `AskUserQuestion` is last resort, not an interview loop.
+- Plan mode: ask only for a real product fork. Write the plan with defaults. Wait for plan approval.
+- Subagents and background loops: never ask. Assume and report.
+- User said "don't ask" / "just do it": `Action` cannot be `ask` for the rest of the turn. Assume.
+
+## Done
+
+The user sees an edit, a diagnosis, or a plan with defaults. Not a quiz.

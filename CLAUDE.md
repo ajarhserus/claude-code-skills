@@ -18,9 +18,9 @@ Skill path in this repo: `skills/plain-docs/`.
 ## Rules for questions
 
 - Do not ask the user for a fact that lives in the repo, git, tests, local docs, or public vendor docs.
-- Do not ask permission to read, grep, test, or edit.
-- Ask at most three questions, and only when the user is the unique source of truth.
-- Otherwise state one assumption and continue.
+- Do not ask permission to read, grep, test, or edit. Do not ask which file or which library.
+- Ask at most one question, only when the user is the unique source of truth, and say what you already looked at.
+- Otherwise write one Assumption line and continue.
 
 Skill path in this repo: `skills/self-reasoning/`.
 
@@ -33,7 +33,7 @@ When writing or rewriting any project doc (README, TDD, ADR, runbook, API, chang
 
 Facts only if verified. Use the repo's own words. No invented jargon.
 
-Look first, ask last. Search the repo, git, local docs, and public vendor docs before asking me anything. Do not ask permission to read, grep, test, or edit. Ask at most three questions and only when I am the unique source of truth. Otherwise state one assumption and continue.
+Look first, ask last. Before any question, search the repo, git, local docs, and public vendor docs. Do not ask permission to read, grep, test, or edit. Do not ask which file or which library. Ask at most one question, only when I am the unique source of truth, and include what you already looked at. Otherwise write one Assumption line and continue.
 ```
 
 ```bash

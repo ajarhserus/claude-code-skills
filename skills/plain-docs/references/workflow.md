@@ -11,13 +11,13 @@ Read before you write. Minimum set, in order, stop when you can source the one-s
 3. The code paths, Makefile, or scripts the doc will name.
 4. Prior messages in this session if the user said "from what we found."
 
-Record each finding as `claim — confirmed source`. Example:
+Record each finding as `claim — confirmed source`. Also copy the exact terms from those files (type names, flags, commands). Example:
 
-- listens on `:8080` — `cmd/api/main.go:22` (read)
-- `make test` runs unit tests — `Makefile:14` (read)
+- listens on `:8080` — `cmd/api/main.go:22` (read). Term: `:8080`
+- `make test` runs unit tests — `Makefile:14` (read). Term: `make test`
 - failover untested in prod — user said so this session
 
-If you cannot name a source, it is not a finding. Do not promote it in the draft.
+If you cannot name a source, it is not a finding. Do not promote it in the draft. Do not replace a collected term with a "clearer" synonym. See [vocabulary.md](vocabulary.md).
 
 If two sources disagree, prefer code over docs. Say the docs were wrong if you are changing them.
 

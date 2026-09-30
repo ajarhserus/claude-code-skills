@@ -68,6 +68,13 @@ Put the command first, then the one line of why or when.
 - Adding an Architecture section the old file did not have
 - Changing `make test` to `npm test` because it "looks standard"
 
+## Invented language
+
+- Renaming `order` to `commerce transaction`
+- Calling `Store.Insert` the persistence layer
+- Introducing an abbreviation the repo does not use
+- Paraphrasing a clear existing sentence into new jargon
+
 ## TDD slop
 
 - Current State that retells the whole company

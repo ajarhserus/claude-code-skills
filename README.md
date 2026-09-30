@@ -2,6 +2,8 @@
 
 Skills for Claude Code. Copy a skill folder into `.claude/skills/` in a project, or into `~/.claude/skills/` to use it everywhere.
 
+This repo has a [CLAUDE.md](CLAUDE.md). In this repo, Claude Code should use `plain-docs` for every project doc.
+
 ## Skills
 
 | Skill | What it does |
@@ -26,3 +28,5 @@ cp -R skills/plain-docs .claude/skills/plain-docs
 Already installed? Copy the folder again after a pull. Claude Code reads skills at session start.
 
 Then ask for a README, runbook, ADR, TDD, or `/plain-docs`.
+
+To force the skill in another repo, copy the block in [CLAUDE.md](CLAUDE.md) into that repo's `CLAUDE.md`.

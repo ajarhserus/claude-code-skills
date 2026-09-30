@@ -93,6 +93,21 @@ Never in shipped docs:
 - Supercharge / unlock / elevate
 - Out of the box experience
 - Next-generation / game-changer / revolutionize
+- Deep dive / dive in / let's unpack
+- At its core
+- Under the hood (as decoration — name the file)
+- Battle-tested
+- Production-grade
+- Thoughtfully designed
+- Opinionated (unless quoting the project)
+- First-class support
+- Batteries included
+- Secret sauce
+- North star
+- Alignment / aligned stakeholders
+- Synergy
+- Value-add
+- Going forward / moving forward
 
 ## Allowed exceptions
 

@@ -92,3 +92,23 @@ Before:
 After:
 
 > Failover is coded for region A → region B. We have not tested it in production. Last drill was 2025-11-02 and it was tabletop only.
+
+## Session dump → runbook
+
+Before (what the model wants to write after an investigation):
+
+> ## Architecture Overview
+> At a high level, the orders platform leverages a robust pipeline to ensure seamless processing.
+
+After (only what the session actually found):
+
+> # Orders 5xx after deploy
+>
+> ## Check
+> 1. `kubectl logs deploy/orders-api -n prod --since=15m | grep timeout`
+> 2. If you see `checkout-db:5432: i/o timeout`, the new chart dropped the network policy.
+>
+> ## Act
+> 1. `kubectl apply -f deploy/prod/networkpolicy.yaml`
+> 2. Error rate on https://grafana.example/d/orders should fall under 1% within 2 minutes.
+> 3. Still high → page #orders-oncall

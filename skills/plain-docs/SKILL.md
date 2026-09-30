@@ -1,13 +1,15 @@
 ---
 name: plain-docs
-description: Write or rewrite README, API docs, runbooks, ADRs, technical design documents (TDD), design docs, changelogs, comments, and onboarding guides in short plain English grounded in repo files and prior findings. Use when the user asks to document this, write docs, write a TDD, draft a technical design document, update the README, explain the system, draft a runbook, write an ADR, clean this doc, make it simple, kill buzzwords, less corporate, stop the slop, or de-AI the writing. Do not use for marketing pages, sales copy, or inventing features the code does not have.
+description: Write or rewrite README, API docs, runbooks, ADRs, technical design documents (TDD), design docs, changelogs, comments, and onboarding guides in short plain English using only verified or user-confirmed facts from the repo and this session. Use when the user asks to document this, write docs, write a TDD, draft a technical design document, update the README, explain the system, draft a runbook, write an ADR, clean this doc, make it simple, kill buzzwords, less corporate, stop the slop, or de-AI the writing. Do not use for marketing pages, sales copy, speculation, or inventing features.
 ---
 
 # Plain Docs
 
 Write the doc a tired teammate can use. Not a brochure.
 
-Every factual sentence must come from a finding. A finding is a file, log, ticket, measurement, or something already established in this session. If you did not find it, do not write it.
+Write facts only if they are verified or the user confirmed them. Verified means you read the file, log, ticket, config, or command in this session. Do not write guesses, "probably", inferred architecture, or features that are not in the sources.
+
+What counts as confirmed: [references/evidence.md](references/evidence.md).
 
 Load extra rules only when needed:
 
@@ -17,6 +19,7 @@ Load extra rules only when needed:
 - Before/after: [references/examples.md](references/examples.md)
 - Skeletons: [references/templates.md](references/templates.md)
 - Technical design document (TDD): [references/tdd.md](references/tdd.md)
+- Verified vs guess: [references/evidence.md](references/evidence.md)
 
 ## Mode
 
@@ -28,15 +31,16 @@ Pick one. Do not mix.
 | "Rewrite this", "clean this", "make this readable" | **Rewrite** |
 | "Document what we just found" | **Session** — treat the investigation as the source. Do not re-invent it. |
 
-Rewrite mode: keep the same facts and file path. Change voice and structure only. Do not add features the old doc did not claim unless a repo finding proves them.
+Rewrite mode: keep the same confirmed facts and file path. Change voice and structure only. Drop old claims the code disproves. Do not add features the old doc did not claim unless a source you read proves them.
 
 ## Do this first
 
 1. Find the destination. Existing file wins. Else use [references/workflow.md](references/workflow.md) § Where the file goes.
 2. Sniff voice. Read one nearby doc in the same folder. Match heading style, pronoun, and how commands are shown. Do not invent a new brand voice.
-3. Build a findings list for yourself. Source each fact (`cmd/server/main.go:40`, `make test`, "session: p99 was 420ms"). Do not dump this list unless the user asked how you know.
-4. Name the reader and the job of the doc in one line each. Keep them in your head.
-5. Write the one-sentence answer. Expand only what that sentence cannot carry.
+3. Build a findings list for yourself. Each line is `claim — source`. No source → not a finding.
+4. Drop any line that is a guess. Those go to Known gaps / Open questions, labeled `Unverified`.
+5. Name the reader and the job of the doc in one line each. Keep them in your head.
+6. Write the one-sentence answer from confirmed lines only. Expand only what that sentence cannot carry.
 
 If the list is thin, gather more from the repo before writing. If a needed fact is still missing, write the gap in the doc. Do not paper it with adjectives.
 
@@ -124,6 +128,8 @@ Also cut unprompted decoration. See [references/anti-patterns.md](references/ant
 ## Hard rules
 
 - Do not invent a capability.
+- Do not write a hypothesis as if it were shipped.
+- Do not use likely / probably / typically / should be / seems to fill a hole.
 - Do not write a style lecture. Ship the doc.
 - Voice diff only if asked, and only 2–3 habits.
 - Do not create extra files the user did not ask for (`CONTRIBUTING.md`, `ARCHITECTURE.md`, `docs/overview.md`) unless they did.
@@ -134,7 +140,8 @@ Also cut unprompted decoration. See [references/anti-patterns.md](references/ant
 
 - Someone can follow it without asking you.
 - There is a pasteable example when the job is a command or API call.
-- Every factual sentence has a finding behind it.
+- Every factual sentence has a confirmed source.
+- Guesses are labeled Unverified or absent.
 - Gaps are named, not smoothed over.
 - No banned phrase, no unprompted diagram, no welcome paragraph.
 - A tired person at 2am can parse it.

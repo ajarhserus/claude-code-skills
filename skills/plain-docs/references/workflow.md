@@ -11,13 +11,17 @@ Read before you write. Minimum set, in order, stop when you can source the one-s
 3. The code paths, Makefile, or scripts the doc will name.
 4. Prior messages in this session if the user said "from what we found."
 
-Record each finding as `claim — source`. Example:
+Record each finding as `claim — confirmed source`. Example:
 
-- listens on `:8080` — `cmd/api/main.go:22`
-- `make test` runs unit tests — `Makefile:14`
-- failover untested in prod — session note from the user
+- listens on `:8080` — `cmd/api/main.go:22` (read)
+- `make test` runs unit tests — `Makefile:14` (read)
+- failover untested in prod — user said so this session
+
+If you cannot name a source, it is not a finding. Do not promote it in the draft.
 
 If two sources disagree, prefer code over docs. Say the docs were wrong if you are changing them.
+
+Guesses go to Known gaps / Open questions as `Unverified`. See [evidence.md](evidence.md).
 
 ## Where the file goes
 
@@ -53,9 +57,9 @@ If none of these fit, ask one question: which path. Do not scatter new doc trees
 
 The investigation already happened. Do not reopen the architecture from scratch.
 
-1. List the decisions and measurements from this session.
+1. List the decisions and measurements from this session that were confirmed (code read, user stated, ticket quoted).
 2. Confirm each against a file when a file exists.
-3. Write only those. Mark anything still unverified as unverified.
+3. Write only those. Mark anything still unverified as `Unverified`. Do not fill with a guessed design.
 
 ## When context is thin
 

@@ -39,6 +39,16 @@ Delete if they only exist to look like a doc:
 | supports X | Often means "there is a type named X" |
 | automatically | Name the trigger |
 | etc. at the end of a short list | Either list the rest or stop |
+| likely / probably / seems | Guess written as fact |
+
+## Hallucinated design
+
+- A store, queue, or service you did not open
+- Ports, retries, and timeouts you did not read
+- "Same as the other service"
+- Filling Failure modes with generic disasters so the table is not empty
+
+If the row is not from code or a confirmed incident, delete it or mark `Unverified`.
 
 ## Structure slop
 

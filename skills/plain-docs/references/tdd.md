@@ -16,16 +16,18 @@ Job of the doc: they can start work without a meeting.
 
 If they asked for both, write the TDD and link the ADR. Do not copy the same paragraphs into both.
 
-## Must come from findings
+## Must be confirmed
 
-Name real things:
+Name only things you verified:
 
-- files and packages that will change
-- endpoints, events, tables, flags
-- numbers we already have (QPS, size, timeout, ticket id)
-- current behavior that is wrong
+- files and packages you opened, or the user named and you accepted
+- endpoints, events, tables, flags you read
+- numbers from a ticket, log, or measurement in this session
+- current behavior you saw in code
 
-Do not invent a future service, queue, or "platform layer" that is not in the repo or the session.
+A TDD may propose a change. The *current* system in the doc must be confirmed. A proposed piece that is not in the ticket or accepted by the user goes under Open questions or Rejected, marked `Unverified` / `Not decided`.
+
+Do not invent a future service, queue, or "platform layer" to make the design look complete.
 
 ## Shape
 
@@ -51,9 +53,15 @@ Delete a subsection only when it cannot apply (example: no data store change →
 
 ## Failure modes
 
-Every design has at least one. If you cannot name a failure, you have not read the change.
+Only list failures you confirmed in code or in a real incident. If you have not read a failure path, one row:
 
-Examples of real rows:
+| Failure | What happens | How we see it |
+| --- | --- | --- |
+| Unverified | No error path read in this session | — |
+
+Do not invent disasters so the table looks complete.
+
+Confirmed examples:
 
 | Failure | What happens | How we see it |
 | --- | --- | --- |

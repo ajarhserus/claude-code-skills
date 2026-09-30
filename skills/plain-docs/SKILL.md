@@ -1,6 +1,6 @@
 ---
 name: plain-docs
-description: Write or rewrite README, API docs, runbooks, ADRs, technical design documents (TDD), design docs, changelogs, comments, and onboarding guides in short plain English using only verified or user-confirmed facts from the repo and this session. Use when the user asks to document this, write docs, write a TDD, draft a technical design document, update the README, explain the system, draft a runbook, write an ADR, clean this doc, make it simple, kill buzzwords, less corporate, stop the slop, or de-AI the writing. Do not use for marketing pages, sales copy, speculation, or inventing features.
+description: Write or rewrite README, API docs, runbooks, ADRs, technical design documents (TDD), design docs, changelogs, comments, and onboarding guides in short plain English using only verified facts and the same words the repo, ticket, or nearby docs already use. Use when the user asks to document this, write docs, write a TDD, draft a technical design document, update the README, explain the system, draft a runbook, write an ADR, clean this doc, make it simple, kill buzzwords, less corporate, stop the slop, or de-AI the writing. Do not use for marketing pages, sales copy, speculation, inventing features, or inventing new jargon.
 ---
 
 # Plain Docs
@@ -20,6 +20,7 @@ Load extra rules only when needed:
 - Skeletons: [references/templates.md](references/templates.md)
 - Technical design document (TDD): [references/tdd.md](references/tdd.md)
 - Verified vs guess: [references/evidence.md](references/evidence.md)
+- Reuse source words: [references/vocabulary.md](references/vocabulary.md)
 
 ## Mode
 
@@ -36,7 +37,7 @@ Rewrite mode: keep the same confirmed facts and file path. Change voice and stru
 ## Do this first
 
 1. Find the destination. Existing file wins. Else use [references/workflow.md](references/workflow.md) § Where the file goes.
-2. Sniff voice. Read one nearby doc in the same folder. Match heading style, pronoun, and how commands are shown. Do not invent a new brand voice.
+2. Sniff voice and words. Read one nearby doc and the code you will name. Collect their terms. Do not invent a new brand voice or new names.
 3. Build a findings list for yourself. Each line is `claim — source`. No source → not a finding.
 4. Drop any line that is a guess. Those go to Known gaps / Open questions, labeled `Unverified`.
 5. Name the reader and the job of the doc in one line each. Keep them in your head.
@@ -53,6 +54,7 @@ If the list is thin, gather more from the repo before writing. If a needed fact 
 - Numbers over adjectives. `30s timeout` not `robust timeout handling`.
 - Headings a person would search (`Rotate the API key`, not `Key Management Considerations`).
 - Match the repo. No jokes or swearing unless that file already does.
+- Use the source's nouns. `order` stays `order`. Do not invent jargon. Full rule: [references/vocabulary.md](references/vocabulary.md).
 
 ## Default shape
 
@@ -102,9 +104,9 @@ Also cut unprompted decoration. See [references/anti-patterns.md](references/ant
 1. Cut the opening pep talk. Start at the work.
 2. Noun stack → one verb (`perform a deployment of` → `deploy`).
 3. Vague praise → a measured claim from findings, or delete.
-4. Name the file, flag, endpoint, or person.
+4. Name the file, flag, endpoint, or person — using that source's word.
 5. Examples must be pasteable. Fake `foo` only when the real name would mislead.
-6. Two sentences same idea → keep the shorter one.
+6. Two sentences same idea → keep the shorter one. Keep the source noun.
 7. Would you Slack this at 2am? If not, rewrite.
 
 ## Doc types
@@ -128,6 +130,7 @@ Also cut unprompted decoration. See [references/anti-patterns.md](references/ant
 ## Hard rules
 
 - Do not invent a capability.
+- Do not invent a word, name, or synonym the sources do not use.
 - Do not write a hypothesis as if it were shipped.
 - Do not use likely / probably / typically / should be / seems to fill a hole.
 - Do not write a style lecture. Ship the doc.
@@ -141,6 +144,7 @@ Also cut unprompted decoration. See [references/anti-patterns.md](references/ant
 - Someone can follow it without asking you.
 - There is a pasteable example when the job is a command or API call.
 - Every factual sentence has a confirmed source.
+- Nouns and commands match the files you read. No new jargon.
 - Guesses are labeled Unverified or absent.
 - Gaps are named, not smoothed over.
 - No banned phrase, no unprompted diagram, no welcome paragraph.

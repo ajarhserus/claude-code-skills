@@ -149,3 +149,18 @@ After:
 > 2. Ship code, flag off.
 > 3. Flag on for internal clients, then all.
 > 4. Roll back: set `orders.tax_v2=off`. Column can stay.
+
+## Guess vs confirmed
+
+Before:
+
+> The API probably sits behind Redis and typically retries failed writes three times.
+
+After:
+
+> Writer is `internal/http/orders.go`. It calls `Store.Insert`.
+>
+> ## Open questions
+>
+> - Unverified: cache. No Redis client in the files read.
+> - Unverified: retry count. No retry loop in `orders.go`.

@@ -58,6 +58,14 @@ Put the command first, then the one line of why or when.
 - Adding an Architecture section the old file did not have
 - Changing `make test` to `npm test` because it "looks standard"
 
+## TDD slop
+
+- Current State that retells the whole company
+- Goals that repeat in-scope
+- "Future-proof" / "flexible design"
+- Rollback that only says "revert if needed"
+- Success metrics nobody measured
+
 ## Chat slop around the doc
 
 Do not wrap the doc in:

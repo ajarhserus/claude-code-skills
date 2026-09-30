@@ -1,6 +1,6 @@
 ---
 name: plain-docs
-description: Write or rewrite README, API docs, runbooks, ADRs, design docs, changelogs, comments, and onboarding guides in short plain English grounded in repo files and prior findings. Use when the user asks to document this, write docs, update the README, explain the system, draft a runbook, write an ADR, clean this doc, make it simple, kill buzzwords, less corporate, stop the slop, or de-AI the writing. Do not use for marketing pages, sales copy, or inventing features the code does not have.
+description: Write or rewrite README, API docs, runbooks, ADRs, technical design documents (TDD), design docs, changelogs, comments, and onboarding guides in short plain English grounded in repo files and prior findings. Use when the user asks to document this, write docs, write a TDD, draft a technical design document, update the README, explain the system, draft a runbook, write an ADR, clean this doc, make it simple, kill buzzwords, less corporate, stop the slop, or de-AI the writing. Do not use for marketing pages, sales copy, or inventing features the code does not have.
 ---
 
 # Plain Docs
@@ -16,6 +16,7 @@ Load extra rules only when needed:
 - Phrase swaps: [references/banned-phrases.md](references/banned-phrases.md)
 - Before/after: [references/examples.md](references/examples.md)
 - Skeletons: [references/templates.md](references/templates.md)
+- Technical design document (TDD): [references/tdd.md](references/tdd.md)
 
 ## Mode
 
@@ -23,7 +24,7 @@ Pick one. Do not mix.
 
 | User intent | Mode |
 | --- | --- |
-| New README / runbook / ADR / API page | **Write** |
+| New README / runbook / ADR / TDD / API page | **Write** |
 | "Rewrite this", "clean this", "make this readable" | **Rewrite** |
 | "Document what we just found" | **Session** — treat the investigation as the source. Do not re-invent it. |
 
@@ -66,6 +67,7 @@ Length budget unless the user asked for more:
 - README section or comment: as short as the facts allow
 - Runbook: one screen
 - ADR: context + decision + consequences + rejected options. No appendix of vibes
+- TDD: problem, constraints, design, failures, rollout. One sitting, not a whitepaper
 
 ## Ban list
 
@@ -109,7 +111,9 @@ Also cut unprompted decoration. See [references/anti-patterns.md](references/ant
 
 **Runbook.** Symptom → check → action → expected result. Time bounds. Who to page. Dashboard links. Not "monitor accordingly."
 
-**ADR / design.** Context, decision, consequences. Rejected options in one paragraph each.
+**ADR.** One decision. Context, decision, consequences. Rejected options in one paragraph each.
+
+**TDD (technical design document).** How we will build a change. Problem, constraints, design (files, APIs, data), failure modes, rollout / rollback, open questions. Full rules: [references/tdd.md](references/tdd.md). Not a vision deck. Not an ADR with extra adjectives.
 
 **Changelog.** User-facing change first. PR or issue id if you have one. Breaking change as an instruction (`You must set FOO or the process will exit`).
 

@@ -28,6 +28,7 @@ If two sources disagree, prefer code over docs. Say the docs were wrong if you a
 | New API page | Next to the handler or under `docs/` if that tree already exists |
 | Runbook | `docs/runbooks/` if present, else next to the service |
 | ADR | `docs/adr/` or `adr/` if present. Number from the last one |
+| TDD / technical design | `docs/design/` or `docs/tdd/` if present, else `docs/` |
 | Comment | The code file they pointed at |
 
 If none of these fit, ask one question: which path. Do not scatter new doc trees.
@@ -35,7 +36,7 @@ If none of these fit, ask one question: which path. Do not scatter new doc trees
 ## Write mode
 
 1. Gather.
-2. Pick the skeleton in [templates.md](templates.md). Delete sections you cannot source.
+2. Pick the skeleton in [templates.md](templates.md). For a TDD, also follow [tdd.md](tdd.md). Delete sections you cannot source.
 3. Draft.
 4. Run Checks in SKILL.md.
 5. Write the file. In chat, show the path and the doc. No preamble.

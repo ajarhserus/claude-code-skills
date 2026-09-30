@@ -6,11 +6,9 @@ Skills for Claude Code. Copy a skill folder into `.claude/skills/` in a project,
 
 | Skill | What it does |
 | --- | --- |
-| [plain-docs](skills/plain-docs) | Write docs in short plain English from real findings. No buzzwords. |
+| [plain-docs](skills/plain-docs) | Write or rewrite docs in short plain English from real findings. No buzzwords. |
 
 ## Install plain-docs
-
-This repo:
 
 ```bash
 git clone https://github.com/ajarhserus/claude-code-skills.git
@@ -25,6 +23,6 @@ mkdir -p .claude/skills
 cp -R skills/plain-docs .claude/skills/plain-docs
 ```
 
-Start a new Claude Code session after copying.
+Already installed? Copy the folder again after a pull. Claude Code reads skills at session start.
 
-Use it by asking for a README, runbook, ADR, API doc, or changelog, or run `/plain-docs`.
+Then ask for a README, runbook, ADR, or `/plain-docs`.

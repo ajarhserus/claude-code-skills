@@ -1,39 +1,55 @@
 ---
 name: plain-docs
-description: Write or rewrite documentation in short plain English from real repo findings and prior context. Use when drafting or cleaning a README, API doc, runbook, ADR, design doc, changelog, comment, onboarding guide, or any doc that sounds like AI filler. Also use when the user says write docs, document this, explain the system, update the README, make it simple, kill the buzzwords, less corporate, or stop the slop. Do not use for marketing copy, sales pages, or inventing features the code does not have.
+description: Write or rewrite README, API docs, runbooks, ADRs, design docs, changelogs, comments, and onboarding guides in short plain English grounded in repo files and prior findings. Use when the user asks to document this, write docs, update the README, explain the system, draft a runbook, write an ADR, clean this doc, make it simple, kill buzzwords, less corporate, stop the slop, or de-AI the writing. Do not use for marketing pages, sales copy, or inventing features the code does not have.
 ---
 
 # Plain Docs
 
-Write the doc a tired teammate can use. Not a brochure. Not a model showing off vocabulary.
+Write the doc a tired teammate can use. Not a brochure.
 
-Ground every claim in prior findings: the conversation, the repo, logs, tickets, or an investigation you already did. If you did not find it, do not write it.
+Every factual sentence must come from a finding. A finding is a file, log, ticket, measurement, or something already established in this session. If you did not find it, do not write it.
 
-## Before you write
+Load extra rules only when needed:
 
-Do this in order. Do not skip.
+- Rewrite and gather steps: [references/workflow.md](references/workflow.md)
+- Extra slop to cut: [references/anti-patterns.md](references/anti-patterns.md)
+- Phrase swaps: [references/banned-phrases.md](references/banned-phrases.md)
+- Before/after: [references/examples.md](references/examples.md)
+- Skeletons: [references/templates.md](references/templates.md)
 
-1. **Collect findings.** Read the files, notes, and prior analysis that exist. Name the source of each fact (`auth.go:88`, `ADR-12`, "we measured p99 at 420ms").
-2. **Name the reader.** On-call engineer, new hire, API consumer, PM.
-3. **Name the job of this doc.** Start the service, call the endpoint, decide a trade-off, recover from X.
-4. **Write the one-sentence answer first.** Then expand only what that sentence cannot carry.
-5. **Prefer names that exist.** Files, commands, flags, tables, endpoints, ticket ids. Not "the orchestration layer."
+## Mode
 
-If findings conflict or are missing, say so in the doc. Do not paper over gaps with adjectives.
+Pick one. Do not mix.
+
+| User intent | Mode |
+| --- | --- |
+| New README / runbook / ADR / API page | **Write** |
+| "Rewrite this", "clean this", "make this readable" | **Rewrite** |
+| "Document what we just found" | **Session** — treat the investigation as the source. Do not re-invent it. |
+
+Rewrite mode: keep the same facts and file path. Change voice and structure only. Do not add features the old doc did not claim unless a repo finding proves them.
+
+## Do this first
+
+1. Find the destination. Existing file wins. Else use [references/workflow.md](references/workflow.md) § Where the file goes.
+2. Sniff voice. Read one nearby doc in the same folder. Match heading style, pronoun, and how commands are shown. Do not invent a new brand voice.
+3. Build a findings list for yourself. Source each fact (`cmd/server/main.go:40`, `make test`, "session: p99 was 420ms"). Do not dump this list unless the user asked how you know.
+4. Name the reader and the job of the doc in one line each. Keep them in your head.
+5. Write the one-sentence answer. Expand only what that sentence cannot carry.
+
+If the list is thin, gather more from the repo before writing. If a needed fact is still missing, write the gap in the doc. Do not paper it with adjectives.
 
 ## Voice
 
-- Instructions in second person: `Run`, `Set`, `Do not`.
-- Team choices in first person plural only when the team owns them: `We keep retries at 3 because...`
-- Short sentences. One idea each.
+- Instructions: `Run`, `Set`, `Do not`.
+- Team choice only when the team owns it: `We keep retries at 3 because Postgres advisory locks already cover the row.`
+- Short sentences. One idea.
 - Contractions are fine.
-- Specific numbers beat adjectives. `30s timeout` beats `robust timeout handling`.
-- Admit gaps. `We have not tested failover in region B` is better than fake completeness.
-- Match the repo's existing voice. Do not add jokes or swearing the codebase does not already use.
+- Numbers over adjectives. `30s timeout` not `robust timeout handling`.
+- Headings a person would search (`Rotate the API key`, not `Key Management Considerations`).
+- Match the repo. No jokes or swearing unless that file already does.
 
 ## Default shape
-
-Use this unless the user asked for a different format:
 
 ```
 What this is
@@ -43,73 +59,78 @@ If it breaks
 Why it is this way (optional, short)
 ```
 
-Headings should be searchable phrases someone would type (`Rotate the API key`, not `Key Management Considerations`).
+Happy path first, in order. Failures and defaults next. Rare edges last or in another file.
 
-Lead with what it is and when you use it. Then the happy path in order. Then failure modes, defaults, and why. Rare edge cases last or in a linked file.
+Length budget unless the user asked for more:
+
+- README section or comment: as short as the facts allow
+- Runbook: one screen
+- ADR: context + decision + consequences + rejected options. No appendix of vibes
 
 ## Ban list
 
-Never use these unless quoting an external spec or a proper noun. Full list and swaps: [references/banned-phrases.md](references/banned-phrases.md).
-
-Delete on sight:
+Never use these unless quoting a spec or a proper noun. Full list: [references/banned-phrases.md](references/banned-phrases.md).
 
 - delve, tapestry, landscape, realm, showcase, leverage, utilize, harness
 - robust, seamless, holistic, cutting-edge, state-of-the-art, best-in-class
 - empower, unlock, elevate, supercharge, streamline (as decoration)
-- furthermore, moreover, additionally (as throat-clearing)
+- furthermore, moreover, additionally (throat-clearing)
 - it is important to note, it is worth mentioning, in today's world
 - serves as, acts as a, provides a way to
 - comprehensive suite, rich set of features, out of the box
 - revolutionize, game-changer, next-generation
-- ensure that (say what actually happens)
-- carefully, simply, just, easily (they hide work)
+- ensure that / carefully / simply / just / easily
 - as an AI, hope this helps, let me know if
-- "In conclusion" in a README
-- Welcome to the X documentation / This document aims to
+- Welcome to the X documentation / This document aims to / In conclusion
+
+Also cut unprompted decoration. See [references/anti-patterns.md](references/anti-patterns.md):
+
+- Emoji in headings
+- Mermaid / ASCII architecture nobody asked for
+- "Key features" / "Key takeaways" / "Let's dive in"
+- Bold on every other noun
+- Fake completeness ("typically", "usually", "should just work")
 
 ## Rewrite rules
 
-Apply in order:
-
 1. Cut the opening pep talk. Start at the work.
-2. Replace noun stacks with one verb (`perform a deployment of` → `deploy`).
-3. Replace vague praise with a measured claim from findings, or delete it.
-4. Name the system, file, flag, or person.
-5. Keep examples runnable or copy-pasteable. Fake `foo`/`bar` only when the real name would mislead.
-6. If two sentences say the same thing, keep the shorter one.
-7. Read it as if you would Slack it to a coworker at 2am. If not, rewrite.
-
-Before/after samples: [references/examples.md](references/examples.md).
-Doc-type skeletons: [references/templates.md](references/templates.md).
+2. Noun stack → one verb (`perform a deployment of` → `deploy`).
+3. Vague praise → a measured claim from findings, or delete.
+4. Name the file, flag, endpoint, or person.
+5. Examples must be pasteable. Fake `foo` only when the real name would mislead.
+6. Two sentences same idea → keep the shorter one.
+7. Would you Slack this at 2am? If not, rewrite.
 
 ## Doc types
 
-**README.** What it is, how to run it locally, how to test, how to configure. No mission statement unless the repo is a product homepage.
+**README.** What it is, run locally, test, configure. No mission statement unless this repo is the product homepage.
 
-**API.** Method, path, auth, required fields, one real request, one real response, status codes that actually happen, idempotency and rate limits if they exist.
+**API.** Method, path, auth, required fields, one real request, one real response, status codes that happen, idempotency and rate limits if they exist.
 
-**Runbook.** Symptom → check → action → expected result. Time bounds. Who to page. Links to dashboards, not "monitor accordingly."
+**Runbook.** Symptom → check → action → expected result. Time bounds. Who to page. Dashboard links. Not "monitor accordingly."
 
-**ADR / design doc.** Context, decision, consequences. Rejected options in one paragraph each. No "we aligned on a strategic direction."
+**ADR / design.** Context, decision, consequences. Rejected options in one paragraph each.
 
-**Changelog.** User-facing change first. PR or issue id if you have one. Breaking changes in plain language (`You must set FOO or the process will exit`).
+**Changelog.** User-facing change first. PR or issue id if you have one. Breaking change as an instruction (`You must set FOO or the process will exit`).
 
-**Code comments.** Why this exists or why it is weird. Never narrate the next line.
+**Comment.** Why it exists or why it is weird. Do not narrate the next line.
 
-**Onboarding.** First day path only. Accounts, clone, one working command, who to ask. Not the company story.
+**Onboarding.** Access, clone, one working command, done-when, who to ask.
 
 ## Hard rules
 
-- Do not invent a capability the code or findings do not have.
-- Do not fill holes with "typically", "usually", or "should just work."
-- Do not write a style lecture. If they asked for a rewrite, give the cleaned doc.
-- If they want a voice diff, mention only the 2–3 habits you changed.
-- If prior context is thin, gather it first. Then write. Do not guess the architecture into existence.
+- Do not invent a capability.
+- Do not write a style lecture. Ship the doc.
+- Voice diff only if asked, and only 2–3 habits.
+- Do not create extra files the user did not ask for (`CONTRIBUTING.md`, `ARCHITECTURE.md`, `docs/overview.md`) unless they did.
+- Do not replace working commands with "similar" ones.
+- After writing, run the Checks. If a check fails, fix the doc before showing it.
 
-## Checks before you ship
+## Checks
 
-- Can someone follow it without asking you?
-- Is there an example they can paste?
-- Did every factual sentence come from a finding?
-- Any sentence that only exists to sound complete? Remove it.
-- Would a tired person at 2am parse this?
+- Someone can follow it without asking you.
+- There is a pasteable example when the job is a command or API call.
+- Every factual sentence has a finding behind it.
+- Gaps are named, not smoothed over.
+- No banned phrase, no unprompted diagram, no welcome paragraph.
+- A tired person at 2am can parse it.

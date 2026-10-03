@@ -1,0 +1,13 @@
+{
+  "skill": "java-debug",
+  "test_cases": [
+    {"input": "Fix the failing OrderServiceTest", "should_trigger": true},
+    {"input": "CI is red, NullPointerException in PaymentService", "should_trigger": true},
+    {"input": "mvn test cannot find symbol in the billing module", "should_trigger": true},
+    {"input": "Spring context fails to load, NoSuchBeanDefinitionException", "should_trigger": true},
+    {"input": "Debug this Gradle dependency conflict, NoSuchMethodError on jackson", "should_trigger": true},
+    {"input": "Add a POST /invoices endpoint with validation", "should_trigger": false},
+    {"input": "Review this PR for architecture, nothing is failing", "should_trigger": false},
+    {"input": "The pytest suite in the data repo is red", "should_trigger": false}
+  ]
+}

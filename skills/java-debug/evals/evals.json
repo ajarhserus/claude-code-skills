@@ -1,0 +1,53 @@
+{
+  "skill": "java-debug",
+  "test_cases": [
+    {
+      "name": "surefire_red_test",
+      "input": "OrderServiceTest fails on CI. Fix it.",
+      "assertions": [
+        "Detects Maven or Gradle from the repo before asking",
+        "Reproduces with a single-test command, not a full clean install first",
+        "Reads the Surefire or Gradle report and the first owned frame",
+        "Fixes the cause and re-runs the same command",
+        "Does not @Disabled the test"
+      ]
+    },
+    {
+      "name": "cannot_find_symbol",
+      "input": "mvn compile says cannot find symbol PaymentClient in the billing module",
+      "assertions": [
+        "Classifies as compile, not runtime",
+        "Checks module dependency, import, and generated sources before editing call sites",
+        "Does not bump a random library version as the first fix",
+        "Re-runs compile for that module"
+      ]
+    },
+    {
+      "name": "spring_context_failure",
+      "input": "UserControllerIT blows up with Failed to load ApplicationContext, NoSuchBeanDefinitionException for MeterRegistry",
+      "assertions": [
+        "Traces the missing bean instead of rewriting the controller",
+        "Checks test slice, test config, and existing @MockBean or test doubles in neighbor tests",
+        "Does not disable the Spring test or add a broad component scan of the whole monolith without evidence",
+        "Re-runs the failing IT"
+      ]
+    },
+    {
+      "name": "ide_green_ci_red",
+      "input": "This test passes in IntelliJ but fails on the Maven job. Fix the real failure.",
+      "assertions": [
+        "Treats the Maven command as the reproduction, not the IDE run",
+        "Compares JDK, working directory, profiles, and generated sources",
+        "Does not tell the user to invalidate caches as the fix"
+      ]
+    },
+    {
+      "name": "do_not_trigger_on_feature",
+      "input": "Add a new endpoint to create invoices. No bug mentioned.",
+      "assertions": [
+        "Does not enter the debug loop",
+        "Does not start by running the full test suite looking for a failure"
+      ]
+    }
+  ]
+}
